@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Posts - lectura pública, escritura solo usuarios autenticados
+    match /posts/{postId} {
+      allow read: if true;
+      // En desarrollo: cualquier usuario autenticado puede escribir
+      // En producción: cambiar a request.auth.token.admin == true
+      allow write: if request.auth != null;
+    }
+
+    // Projects - lectura pública, escritura solo usuarios autenticados
+    match /projects/{projectId} {
+      allow read: if true;
+      // En desarrollo: cualquier usuario autenticado puede escribir
+      // En producción: cambiar a request.auth.token.admin == true
+      allow write: if request.auth != null;
+    }
+
+    // Categories - lectura pública, escritura solo usuarios autenticados
+    match /categories/{categoryId} {
+      allow read: if true;
+      // En desarrollo: cualquier usuario autenticado puede escribir
+      // En producción: cambiar a request.auth.token.admin == true
+      allow write: if request.auth != null;
+    }
+
+    // Users - solo el usuario puede leer/escribir sus datos
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

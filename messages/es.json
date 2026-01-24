@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca",
+    "portfolio": "Portafolio",
+    "articles": "Artículos",
+    "talks": "Charlas",
+    "streaming": "Streaming",
+    "hackathon": "Hackathon",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "greeting": "Bienvenido a mi **portfolio personal**",
+    "title": "Desarrollo software y escalo productos digitales",
+    "card1": "Desarrollador Front-End con experiencia en React y Next.js.",
+    "card2": "Apasionado por Web3, IA y análisis de datos.",
+    "card3": "Experiencia en desarrollo web, APIs y automatización.",
+    "card4": "Certificado en AWS, Data Analysis y Machine Learning."
+  },
+  "trustedBy": {
+    "title": "Confían en mí",
+    "subtitle": "Empresas y organizaciones que han confiado en mi experiencia para impulsar su transformación digital y soluciones de software."
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Proyectos y casos de estudio que muestran soluciones de desarrollo web y productos digitales",
+    "viewAll": "Ver Todos los Proyectos",
+    "viewProject": "Ver Proyecto",
+    "backToPortfolio": "Volver al Portafolio",
+    "backToHome": "Volver al Inicio",
+    "noProjects": "No se encontraron proyectos. ¡Vuelve pronto!",
+    "gallery": "Galería",
+    "completed": "Completado",
+    "inProgress": "En Progreso",
+    "planned": "Planeado",
+    "viewLive": "Ver Demo",
+    "viewMedium": "Ver en Medium"
+  },
+  "about": {
+    "title": "ACERCA DE MÍ",
+    "bio1": "Angel Hernandez (Ciudad de Panamá, Panamá) es un *desarrollador de software* apasionado con experiencia en *desarrollo web*, *análisis de datos* y *proyectos de TI*. Actualmente cursa la *Licenciatura en Ingeniería de Software* y cuenta con certificaciones en *AWS*, *Data Analysis* y *Machine Learning*.",
+    "bio2": "Se desempeñó como *Desarrollador Front-End* en *[Riservi]*, donde participó en la creación de funcionalidades desde cero, colaborando con diseñadores UI/UX. Su proyecto destacado fue el desarrollo de un *sistema de cuestionarios* tipo SurveyMonkey con módulos de respuestas, reportes y estadísticas.",
+    "bio3": "Anteriormente trabajó como *Desarrollador e IT* en *Arauz C. & Asociados*, donde desarrolló *scripts en Excel con Visual Basic* para automatizar flujos de trabajo contables, y creó *APIs para QuickBooks*. Domina tecnologías como *React*, *Next.js*, *TypeScript*, *Python*, *FastAPI*, *SQL*, *MongoDB* y *Supabase*.",
+    "links": {
+      "title": "Enlaces"
+    },
+    "cta": "CONTACTAR"
+  },
+  "companies": {
+    "riservi": {
+      "title": "Más sobre Riservi",
+      "description": "**Riservi** es una empresa donde desempeñé el rol de **Desarrollador Front-End**, participando activamente en la planificación de la lógica del Backend y creando nuevas funcionalidades desde cero. Desarrollé un **sistema de cuestionarios** completo con módulo de respuestas, reportes y estadísticas.",
+      "button": "Más información"
+    },
+    "arauz": {
+      "title": "Más sobre Arauz C. & Asociados",
+      "description": "**Arauz C. & Asociados** es una firma contable donde trabajé como **Desarrollador e IT**. Desarrollé scripts en Excel con Visual Basic para automatizar flujos de trabajo contables, creé **APIs para QuickBooks** y realicé labores de TI incluyendo monitorización y mejoras en el servidor.",
+      "button": "Más información"
+    }
+  },
+  "talks": {
+  },
+  "blog": {
+    "title": "Artículos y Casos de Estudio",
+    "subtitle": "Insights sobre desarrollo, tecnología y proyectos reales",
+    "readMore": "Leer más",
+    "noArticles": "No se encontraron artículos. ¡Vuelve pronto!",
+    "viewAll": "Ver Últimos 10 Artículos"
+  },
+  "footer": {
+    "portfolio": "PORTAFOLIO",
+    "about": "ACERCA DE MÍ",
+    "connect": "CONECTEMOS",
+    "made": "HECHO POR",
+    "portfolioDesign": "Proyectos de Desarrollo",
+    "aboutBio": "Biografía Corta",
+    "aboutTalks": "Charlas y Talleres",
+    "aboutArticles": "Artículos",
+    "connectProject": "¿Tienes un proyecto en mente?",
+    "connectTouch": "Ponte en contacto"
+  },
+  "hackathon": {
+    "backHome": "Volver al Inicio"
+  }
+}

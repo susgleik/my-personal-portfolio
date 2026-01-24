@@ -1,0 +1,16 @@
+Bien quiero hacer un desarrollo/mejora en portafolio.
+actualmente esta en el componente portfolio-section
+este funciona mostrando los cuadros y si se hace click se lleva a medium.
+
+quiero cambiar todo el funcionamiento de el portafolio usando firebase, esto incluye hacer un /admin funcional, tambien con su perfil de admin para creaciones de proyectos del portafolio, esto con funcinalizacion parecida a mediun poder crear el proyecto con su imagen de thumbnail y su pequeño texto de resumen esto es para mostrar en eel cuadro de el proyecto ya que la funcionalidad de uso va  hacer esta.
+
+caso de uso (visitante de pagina):
+el usuario cuanod haga click en portafolio en el nav se mueve hacia seccion de portafolio en home como esta actualmente bien ahora el la sescceion portafolio se muestran los cuadros de los proyectos, cuando hagan click a el cuadro sse va a llevar a una subruta ejemplo /portafolio/proyecto1 ahi se va a mostrar todo el proyecto.
+
+tambien para essto hay que cambiar el tamaño de los cuadros mostradoss en la seccion portafoio para que por ejempoo 1 cuadro sse muestree por row y sea algo grando para que se vea la descripcion y la imagen de el proyecto tambien un limite de las cuadrosss mosstrados por ejemplo 5 y un boton que diga para ver mas portafolio ahi se lleava a la ruta /portafoilio y hay el resto de tablas.
+
+bien temas relevante integracion con firebase (auth, firestorage, storage), 
+bien tambien ver como se va a integrar al internacilacion (i18n) con los proyectos creados que normalmente voy a escribir en español ya que es mi lengua materna, 
+
+
+

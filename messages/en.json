@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "articles": "Articles",
+    "talks": "Talks",
+    "streaming": "Streaming",
+    "hackathon": "Hackathon",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Welcome to my **personal portfolio**",
+    "title": "I develop software and scale digital products",
+    "card1": "Front-End Developer with React and Next.js experience.",
+    "card2": "Passionate about Web3, AI, and data analysis.",
+    "card3": "Experience in web development, APIs, and automation.",
+    "card4": "Certified in AWS, Data Analysis, and Machine Learning."
+  },
+  "trustedBy": {
+    "title": "Trusted by",
+    "subtitle": "Companies and organizations that have trusted my expertise to drive their digital transformation and software solutions."
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Projects and case studies showcasing web development solutions and digital products",
+    "viewAll": "View All Projects",
+    "viewProject": "View Project",
+    "backToPortfolio": "Back to Portfolio",
+    "backToHome": "Back to Home",
+    "noProjects": "No projects found. Check back soon!",
+    "gallery": "Gallery",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "planned": "Planned",
+    "viewLive": "View Live",
+    "viewMedium": "View on Medium"
+  },
+  "about": {
+    "title": "ABOUT ME",
+    "bio1": "Angel Hernandez (Panama City, Panama) is a passionate *software developer* with experience in *web development*, *data analysis*, and *IT projects*. He is currently pursuing a *Bachelor's degree in Software Engineering* and holds certifications in *AWS*, *Data Analysis*, and *Machine Learning*.",
+    "bio2": "He worked as a *Front-End Developer* at *[Riservi]*, where he participated in building features from scratch, collaborating with UI/UX designers. His notable project was developing a *survey system* similar to SurveyMonkey with response modules, reports, and statistics.",
+    "bio3": "Previously, he worked as a *Developer and IT* at *Arauz C. & Asociados*, where he developed *Excel scripts with Visual Basic* to automate accounting workflows and created *APIs for QuickBooks*. He masters technologies like *React*, *Next.js*, *TypeScript*, *Python*, *FastAPI*, *SQL*, *MongoDB*, and *Supabase*.",
+    "links": {
+      "title": "Links"
+    },
+    "cta": "GET IN TOUCH"
+  },
+  "companies": {
+    "riservi": {
+      "title": "More about Riservi",
+      "description": "**Riservi** is a company where I worked as a **Front-End Developer**, actively participating in backend logic planning and creating new features from scratch. I developed a complete **survey system** with response modules, reports, and statistics.",
+      "button": "More info"
+    },
+    "arauz": {
+      "title": "More about Arauz C. & Asociados",
+      "description": "**Arauz C. & Asociados** is an accounting firm where I worked as a **Developer and IT**. I developed Excel scripts with Visual Basic to automate accounting workflows, created **APIs for QuickBooks**, and performed IT tasks including monitoring and server improvements.",
+      "button": "More info"
+    }
+  },
+  "talks": {
+  },
+  "blog": {
+    "title": "Articles & Case Studies",
+    "subtitle": "Insights on development, technology, and real projects",
+    "readMore": "Read more",
+    "noArticles": "No articles found. Check back soon!",
+    "viewAll": "View Latest 10 Articles"
+  },
+  "footer": {
+    "portfolio": "PORTFOLIO",
+    "about": "ABOUT ME",
+    "connect": "LET'S CONNECT",
+    "made": "MADE BY",
+    "portfolioDesign": "Development Projects",
+    "aboutBio": "Short Biography",
+    "aboutTalks": "Talks and Workshops",
+    "aboutArticles": "Articles",
+    "connectProject": "Have a project in mind?",
+    "connectTouch": "Get in touch"
+  },
+  "hackathon": {
+    "backHome": "Back to Home"
+  }
+}
