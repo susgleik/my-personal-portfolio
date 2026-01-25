@@ -16,7 +16,14 @@ import remarkGfm from 'remark-gfm';
 
 // Custom Medium icon (lucide-react doesn't have one)
 const MediumIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    width="24"
+    height="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
   </svg>
 );
@@ -162,26 +169,26 @@ export default function ProjectDetailPage() {
             <div className="flex flex-wrap gap-4 mb-8">
               {project.liveUrl && (
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-blue-500 hover:bg-blue-600 text-white">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    {locale === 'en' ? 'View Live' : 'Ver Demo'}
-                  </Button>
+                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white inline-flex items-center gap-2 transition-colors cursor-pointer">
+                    <ExternalLink className="w-4 h-4 shrink-0" />
+                    <span>{locale === 'en' ? 'View Live' : 'Ver Demo'}</span>
+                  </button>
                 </a>
               )}
               {project.githubUrl && (
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                    <Github className="w-4 h-4 mr-2" />
-                    GitHub
-                  </Button>
+                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
+                    <Github className="w-4 h-4 shrink-0" />
+                    <span>GitHub</span>
+                  </button>
                 </a>
               )}
               {project.mediumUrl && (
                 <a href={project.mediumUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                    <MediumIcon className="w-4 h-4 mr-2" />
-                    Medium
-                  </Button>
+                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
+                    <MediumIcon className="w-4 h-4 shrink-0" />
+                    <span>Medium</span>
+                  </button>
                 </a>
               )}
             </div>
@@ -212,7 +219,7 @@ export default function ProjectDetailPage() {
       <ScrollFadeWrapper delay={200}>
         <section className="px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-3xl mx-auto">
-            <article className="prose prose-lg prose-invert max-w-none prose-headings:text-white prose-p:text-white/80 prose-a:text-blue-400 prose-strong:text-white prose-ul:text-white/80 prose-ol:text-white/80 prose-li:text-white/80 prose-code:text-blue-300 prose-code:bg-white/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-white/5 prose-blockquote:border-blue-400 prose-blockquote:text-white/70">
+            <article className="prose prose-lg prose-invert max-w-none">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{

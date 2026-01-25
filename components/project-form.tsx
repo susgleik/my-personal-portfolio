@@ -174,7 +174,7 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
       });
       setIsTranslating(false);
 
-      // 4. Preparar datos del proyecto
+      // 4. Preparar datos del proyecto (usar spread condicional para campos opcionales)
       const projectData = {
         title: data.title,
         description: data.description,
@@ -185,17 +185,18 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
         slug: generateSlug(data.title),
         thumbnail: thumbnailUrl,
         images: allImageUrls.filter(url => url.startsWith('http')),
-        category: data.category || undefined,
         technologies: data.technologies.split(',').map((t) => t.trim()).filter(Boolean),
-        githubUrl: data.githubUrl || undefined,
-        liveUrl: data.liveUrl || undefined,
-        mediumUrl: data.mediumUrl || undefined,
         featured: data.order < 5, // Los primeros 5 proyectos aparecen en Home
         isPublished: data.isPublished,
         status: data.status,
         order: data.order,
         createdAt: project?.createdAt || new Date(),
         updatedAt: new Date(),
+        // Campos opcionales - solo incluir si tienen valor (Firestore no acepta undefined)
+        ...(data.category && { category: data.category }),
+        ...(data.githubUrl && { githubUrl: data.githubUrl }),
+        ...(data.liveUrl && { liveUrl: data.liveUrl }),
+        ...(data.mediumUrl && { mediumUrl: data.mediumUrl }),
       };
 
       // 5. Crear o actualizar

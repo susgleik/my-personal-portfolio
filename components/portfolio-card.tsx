@@ -37,24 +37,30 @@ export default function PortfolioCard({
         className={`relative ${
           isLarge
             ? 'flex flex-col md:flex-row gap-6 p-6'
-            : 'aspect-[4/3]'
+            : 'aspect-[4/3] bg-gray-900'
         }`}
       >
         {/* Imagen */}
         <div
-          className={`relative overflow-hidden rounded-xl ${
+          className={`overflow-hidden ${
             isLarge
-              ? 'w-full md:w-1/2 aspect-video md:aspect-[4/3]'
+              ? 'relative w-full md:w-1/2 aspect-video md:aspect-[4/3] rounded-xl'
               : 'absolute inset-0'
           }`}
         >
-          <Image
-            src={project.thumbnail || '/placeholder.svg'}
-            alt={title}
-            fill
-            className="object-cover transition-all duration-500 group-hover:scale-110"
-            sizes={isLarge ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 640px) 100vw, 25vw'}
-          />
+          {project.thumbnail ? (
+            <Image
+              src={project.thumbnail}
+              alt={title}
+              fill
+              className="object-cover transition-all duration-500 group-hover:scale-110"
+              sizes={isLarge ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 640px) 100vw, 33vw'}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center">
+              <span className="text-4xl font-bold text-white/30">{title.charAt(0)}</span>
+            </div>
+          )}
           {!isLarge && (
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           )}
