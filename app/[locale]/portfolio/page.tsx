@@ -61,10 +61,10 @@ export default function PortfolioPage() {
   }, [activeCategory, loadingCategories]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <Navbar />
 
-      <section className="py-24 md:py-32 px-4 sm:px-6 lg:px-8">
+      <section className="flex-1 pt-24 pb-12 md:pt-32 md:pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <ScrollFadeWrapper delay={0}>
             <div className="text-center mb-12">

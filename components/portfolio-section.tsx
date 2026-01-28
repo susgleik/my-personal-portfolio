@@ -46,7 +46,7 @@ export default function PortfolioSection() {
       try {
         if (activeCategory === 'all') {
           // Cargar los primeros 5 proyectos destacados
-          const data = await getFeaturedProjects(5)
+          const data = await getFeaturedProjects(3)
           setProjects(data)
         } else {
           // Filtrar por categoría
