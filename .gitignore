@@ -46,6 +46,8 @@ next-env.d.ts
 .firebase/
 *-debug.log
 firebase-debug.*.log
+serviceAccountKey.json
+scripts/serviceAccountKey.json
 
 # Firebase Emulator data
 firebase-export-*
@@ -62,3 +64,4 @@ backup-data/
 # Claude Code CLI temporary files
 .tmpclaude-*
 tmpclaude-*
+.vercel
