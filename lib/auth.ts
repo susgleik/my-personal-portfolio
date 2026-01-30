@@ -40,17 +40,25 @@ export const getCurrentUser = (): Promise<FirebaseUser | null> => {
 
 export const checkIsAdmin = async (user: FirebaseUser): Promise<boolean> => {
   try {
-    // En desarrollo local, permitir emails específicos como admin
-    if (process.env.NODE_ENV === 'development') {
-      const adminEmails = ['admin@test.com', 'admin@example.com'];
-      if (user.email && adminEmails.includes(user.email)) {
-        return true;
-      }
+    // Lista de emails de administradores permitidos
+    const adminEmails = [
+      'admin@test.com',
+      'admin@example.com',
+      'angelhernades26@gmail.com', // Tu email
+    ];
+
+    // Verificar si el email está en la lista de admins
+    if (user.email && adminEmails.includes(user.email)) {
+      return true;
     }
 
-    // En producción, verificar custom claims
+    // También verificar custom claims (para mayor seguridad en producción)
     const tokenResult = await user.getIdTokenResult();
-    return !!tokenResult.claims.admin;
+    if (tokenResult.claims.admin) {
+      return true;
+    }
+
+    return false;
   } catch (error) {
     console.error('Error checking admin status:', error);
     return false;

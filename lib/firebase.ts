@@ -18,7 +18,10 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+// Conectar a emuladores solo si USE_EMULATORS=true
+const useEmulators = process.env.NEXT_PUBLIC_USE_EMULATORS === 'true';
+
+if (process.env.NODE_ENV === 'development' && useEmulators && typeof window !== 'undefined') {
   try {
     connectFirestoreEmulator(db, '127.0.0.1', 8080);
   } catch (error) {
