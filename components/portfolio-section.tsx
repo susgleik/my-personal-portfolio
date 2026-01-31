@@ -3,8 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl'
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { getProjectsByCategory, getCategories, getFeaturedProjects } from '@/lib/firestore'
-import type { Project, Category } from '@/types'
+import { useFeaturedProjects, useProjectsByCategory, useCategories } from '@/lib/hooks'
 import PortfolioCard from './portfolio-card'
 import { Button } from './ui/button'
 import { Loader2, ArrowRight } from 'lucide-react'
@@ -13,57 +12,21 @@ export default function PortfolioSection() {
   const t = useTranslations()
   const locale = useLocale()
   const [isVisible, setIsVisible] = useState(false)
-  const [projects, setProjects] = useState<Project[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
-  const [loadingCategories, setLoadingCategories] = useState(true)
   const [activeCategory, setActiveCategory] = useState<string>('all')
+
+  // React Query hooks con cache
+  const { data: categories = [], isLoading: loadingCategories } = useCategories()
+  const { data: featuredProjects = [], isLoading: loadingFeatured } = useFeaturedProjects(3)
+  const { data: categoryProjects = [], isLoading: loadingCategory } = useProjectsByCategory(activeCategory, 5)
+
+  // Determinar qué proyectos mostrar
+  const projects = activeCategory === 'all' ? featuredProjects : categoryProjects
+  const loading = activeCategory === 'all' ? loadingFeatured : loadingCategory
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100)
     return () => clearTimeout(timer)
   }, [])
-
-  // Cargar categorías
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await getCategories()
-        setCategories(data)
-      } catch (error) {
-        console.error('Error fetching categories:', error)
-      } finally {
-        setLoadingCategories(false)
-      }
-    }
-    fetchCategories()
-  }, [])
-
-  // Cargar proyectos
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setLoading(true)
-      try {
-        if (activeCategory === 'all') {
-          // Cargar los primeros 5 proyectos destacados
-          const data = await getFeaturedProjects(3)
-          setProjects(data)
-        } else {
-          // Filtrar por categoría
-          const data = await getProjectsByCategory(activeCategory, { limit: 5 })
-          setProjects(data)
-        }
-      } catch (error) {
-        console.error('Error fetching projects:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (!loadingCategories) {
-      fetchProjects()
-    }
-  }, [activeCategory, loadingCategories])
 
   return (
     <section

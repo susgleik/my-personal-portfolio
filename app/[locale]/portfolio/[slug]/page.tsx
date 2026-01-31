@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
@@ -8,8 +8,7 @@ import Link from 'next/link';
 import Navbar from '@/components/navbar';
 import ScrollFadeWrapper from '@/components/scroll-fade-wrapper';
 import { Button } from '@/components/ui/button';
-import { getProjectBySlug, getCategoryBySlug } from '@/lib/firestore';
-import type { Project, Category } from '@/types';
+import { useProjectBySlug, useCategoryBySlug } from '@/lib/hooks';
 import { Loader2, ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -45,41 +44,15 @@ export default function ProjectDetailPage() {
   const params = useParams();
   const t = useTranslations();
   const locale = useLocale();
-  const [project, setProject] = useState<Project | null>(null);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const slug = params.slug as string;
-        const data = await getProjectBySlug(slug);
-        if (!data) {
-          setError(locale === 'en' ? 'Project not found' : 'Proyecto no encontrado');
-        } else {
-          setProject(data);
-          // Load category info
-          if (data.category) {
-            const catData = await getCategoryBySlug(data.category);
-            setCategory(catData);
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching project:', err);
-        setError(locale === 'en' ? 'Error loading project' : 'Error al cargar el proyecto');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const slug = params.slug as string;
 
-    if (params.slug) {
-      fetchProject();
-    }
-  }, [params.slug, locale]);
+  // React Query hooks con cache
+  const { data: project, isLoading, isError } = useProjectBySlug(slug);
+  const { data: category } = useCategoryBySlug(project?.category || '');
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
@@ -87,12 +60,14 @@ export default function ProjectDetailPage() {
     );
   }
 
-  if (error || !project) {
+  if (isError || !project) {
     return (
       <div className="min-h-screen bg-black text-white">
         <Navbar />
         <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-          <h1 className="text-2xl font-bold mb-4">{error}</h1>
+          <h1 className="text-2xl font-bold mb-4">
+            {locale === 'en' ? 'Project not found' : 'Proyecto no encontrado'}
+          </h1>
           <Link href="/portfolio">
             <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
               <ArrowLeft className="w-4 h-4 mr-2" />

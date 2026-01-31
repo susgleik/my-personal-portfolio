@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Space_Grotesk } from "next/font/google"
 import "./globals.css"
+import { QueryProvider } from "@/lib/providers/query-provider"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -184,7 +185,7 @@ export default function RootLayout({
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       </head>
       <body className={spaceGrotesk.className}>
-        {children}
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   )

@@ -1,64 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Navbar from '@/components/navbar';
 import ScrollFadeWrapper from '@/components/scroll-fade-wrapper';
 import PortfolioCard from '@/components/portfolio-card';
-import { getProjectsByCategory, getCategories, getPublishedProjects } from '@/lib/firestore';
-import type { Project, Category } from '@/types';
+import { usePublishedProjects, useProjectsByCategory, useCategories } from '@/lib/hooks';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function PortfolioPage() {
   const t = useTranslations();
   const locale = useLocale();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [activeCategory, setActiveCategory] = useState<string>('all'); // 'all' = todos los proyectos
+  const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  // Load categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await getCategories();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-    fetchCategories();
-  }, []);
+  // React Query hooks con cache
+  const { data: categories = [] } = useCategories();
+  const { data: allProjects = [], isLoading: loadingAll } = usePublishedProjects(50);
+  const { data: categoryProjects = [], isLoading: loadingCategory } = useProjectsByCategory(activeCategory, 50);
 
-  // Load projects when category changes
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setLoading(true);
-      try {
-        if (activeCategory === 'all') {
-          // Cargar todos los proyectos publicados
-          const data = await getPublishedProjects(50);
-          setProjects(data);
-        } else {
-          // Filtrar por categoría específica
-          const data = await getProjectsByCategory(activeCategory, { limit: 50 });
-          setProjects(data);
-        }
-      } catch (error) {
-        console.error('Error fetching projects:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!loadingCategories) {
-      fetchProjects();
-    }
-  }, [activeCategory, loadingCategories]);
+  // Determinar qué proyectos mostrar
+  const projects = activeCategory === 'all' ? allProjects : categoryProjects;
+  const loading = activeCategory === 'all' ? loadingAll : loadingCategory;
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">

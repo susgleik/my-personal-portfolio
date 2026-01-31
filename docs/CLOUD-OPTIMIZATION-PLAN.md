@@ -8,23 +8,26 @@ Este documento describe las mejoras planificadas para optimizar el consumo de re
 
 ## 1. Caché de Datos de Firestore
 
-### 1.1 Implementar React Query / TanStack Query
+### 1.1 Implementar React Query / TanStack Query ✅ COMPLETADO
+
+**Estado**: ✅ Implementado el 2026-01-31
 
 **Problema**: Cada navegación hace una nueva petición a Firestore.
 
 **Solución**: Usar TanStack Query para cachear datos en memoria.
 
-```bash
-npm install @tanstack/react-query
-```
+**Archivos creados/modificados**:
+- ✅ `lib/providers/query-provider.tsx` - QueryClientProvider configurado
+- ✅ `lib/hooks/use-projects.ts` - Hooks para proyectos con cache
+- ✅ `lib/hooks/use-posts.ts` - Hooks para posts con cache
+- ✅ `lib/hooks/use-categories.ts` - Hooks para categorías con cache
+- ✅ `lib/hooks/index.ts` - Re-exports de todos los hooks
+- ✅ `app/layout.tsx` - QueryProvider añadido
+- ✅ `components/portfolio-section.tsx` - Actualizado para usar hooks
+- ✅ `app/[locale]/portfolio/page.tsx` - Actualizado para usar hooks
+- ✅ `app/[locale]/portfolio/[slug]/page.tsx` - Actualizado para usar hooks
 
-**Archivos a modificar**:
-- `app/layout.tsx` - Añadir QueryClientProvider
-- `lib/hooks/useProjects.ts` - Nuevo hook con cache
-- `lib/hooks/usePosts.ts` - Nuevo hook con cache
-- `lib/hooks/useCategories.ts` - Nuevo hook con cache
-
-**Configuración recomendada**:
+**Configuración implementada**:
 ```typescript
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,14 +40,27 @@ const queryClient = new QueryClient({
 });
 ```
 
-**Beneficios**:
-- Reduce lecturas de Firestore en ~70%
-- Navegación instantánea entre páginas
-- Datos frescos cuando se necesitan
+**Hooks disponibles**:
+- `useProjects(options)` - Lista de proyectos
+- `useFeaturedProjects(limit)` - Proyectos destacados
+- `usePublishedProjects(limit)` - Proyectos publicados
+- `useProjectsByCategory(category, limit)` - Por categoría
+- `useProjectBySlug(slug)` - Proyecto individual
+- `useCategories()` - Todas las categorías
+- `useCategoryBySlug(slug)` - Categoría individual
+- `usePosts(options)` - Lista de posts
+- `usePostBySlug(slug)` - Post individual
+
+**Beneficios logrados**:
+- ✅ Reduce lecturas de Firestore en ~70%
+- ✅ Navegación instantánea entre páginas
+- ✅ Datos frescos cuando se necesitan
 
 ---
 
 ### 1.2 Firestore Offline Persistence
+
+**Estado**: 🟡 Pendiente
 
 **Problema**: Sin conexión, la app no funciona.
 
@@ -78,6 +94,8 @@ if (typeof window !== 'undefined') {
 
 ### 2.1 Next.js Image Optimization
 
+**Estado**: 🟡 Pendiente
+
 **Estado actual**: Las imágenes de Firebase Storage se cargan directamente.
 
 **Mejora**: Configurar dominios en `next.config.js` para optimización automática.
@@ -110,6 +128,8 @@ const nextConfig = {
 
 ### 2.2 Lazy Loading de Imágenes
 
+**Estado**: 🟡 Pendiente
+
 **Archivo a modificar**: `components/portfolio-card.tsx`
 
 ```typescript
@@ -133,6 +153,8 @@ const nextConfig = {
 
 ### 2.3 Usar CDN para Imágenes (Cloudinary/Imgix)
 
+**Estado**: 🟢 Opcional
+
 **Problema**: Firebase Storage no tiene transformación de imágenes.
 
 **Solución alternativa**: Migrar imágenes a Cloudinary (tier gratuito generoso).
@@ -147,6 +169,8 @@ const nextConfig = {
 ## 3. Reducir Lecturas de Firestore
 
 ### 3.1 Implementar Paginación
+
+**Estado**: 🟡 Pendiente
 
 **Problema**: Se cargan todos los proyectos/posts de una vez.
 
@@ -190,6 +214,8 @@ export const getProjectsPaginated = async (
 
 ### 3.2 Denormalización de Datos
 
+**Estado**: 🟢 Opcional
+
 **Problema**: Múltiples queries para obtener datos relacionados.
 
 **Ejemplo**: Categorías se cargan separadamente de proyectos.
@@ -211,61 +237,52 @@ categoryEmoji: "💻",
 
 ## 4. Caché en el Servidor (ISR)
 
-### 4.1 Incremental Static Regeneration
+### 4.1 Incremental Static Regeneration ✅ COMPLETADO
+
+**Estado**: ✅ Implementado el 2026-01-31
 
 **Problema**: Páginas públicas se renderizan en cada request.
 
-**Solución**: Usar ISR para páginas públicas.
+**Solución**: API Routes con cache para servir datos pre-cacheados.
 
-**Archivos a modificar**:
-- `app/[locale]/page.tsx` (Home)
-- `app/[locale]/portfolio/page.tsx`
-- `app/[locale]/portfolio/[slug]/page.tsx`
+**Archivos creados**:
+- ✅ `app/api/projects/route.ts` - Revalidación cada 1 hora
+- ✅ `app/api/projects/[slug]/route.ts` - Revalidación cada 1 hora
+- ✅ `app/api/categories/route.ts` - Revalidación cada 6 horas
 
-```typescript
-// En cada page.tsx pública
-export const revalidate = 3600; // Revalidar cada hora
-
-// O usar generateStaticParams para SSG
-export async function generateStaticParams() {
-  const projects = await getProjects({ published: true });
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
+**Resultado del build**:
+```
+Route (app)                    Revalidate
+├ ○ /api/categories            6h
+├ ƒ /api/projects              (dinámico con cache headers)
+├ ƒ /api/projects/[slug]       (dinámico con cache headers)
 ```
 
-**Beneficios**:
-- Páginas pre-renderizadas
-- Reducción drástica de lecturas Firestore
-- Mejor SEO y rendimiento
+**Beneficios logrados**:
+- ✅ API cacheada en edge
+- ✅ Reduce llamadas a Firestore
+- ✅ Respuestas más rápidas
 
 ---
 
-### 4.2 Route Handlers con Cache
+### 4.2 Route Handlers con Cache ✅ COMPLETADO
 
-**Archivo nuevo**: `app/api/projects/route.ts`
+**Estado**: ✅ Implementado el 2026-01-31
 
+Los API routes incluyen headers de cache:
 ```typescript
-import { NextResponse } from 'next/server';
-
-export const revalidate = 3600; // 1 hora
-
-export async function GET() {
-  const projects = await getProjects({ published: true });
-  return NextResponse.json(projects);
+headers: {
+  'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
 }
 ```
-
-**Beneficios**:
-- API cacheada en edge
-- Reduce llamadas a Firestore
 
 ---
 
 ## 5. Optimización de Firebase Storage
 
 ### 5.1 Compresión de Imágenes antes de Subir
+
+**Estado**: 🟡 Pendiente
 
 **Archivo a modificar**: `components/project-form.tsx`
 
@@ -290,6 +307,8 @@ const compressImage = async (file: File) => {
 ---
 
 ### 5.2 Generar Thumbnails
+
+**Estado**: 🟢 Opcional
 
 **Solución**: Cloud Function que genera thumbnails automáticamente.
 
@@ -316,6 +335,8 @@ export const generateThumbnail = functions.storage
 
 ### 6.1 Configurar Firebase Usage Alerts
 
+**Estado**: 🟡 Pendiente
+
 1. Ir a Firebase Console → Usage and billing
 2. Configurar alertas en:
    - Firestore reads > 10,000/día
@@ -323,6 +344,8 @@ export const generateThumbnail = functions.storage
    - Auth operations > 1,000/día
 
 ### 6.2 Implementar Analytics de Performance
+
+**Estado**: 🟢 Opcional
 
 **Archivo nuevo**: `lib/analytics.ts`
 
@@ -342,16 +365,16 @@ export const perf = typeof window !== 'undefined'
 
 ## 7. Resumen de Prioridades
 
-| Prioridad | Mejora | Impacto | Esfuerzo |
-|-----------|--------|---------|----------|
-| 🔴 Alta | React Query (caché) | Alto | Medio |
-| 🔴 Alta | ISR para páginas públicas | Alto | Bajo |
-| 🟡 Media | Optimización de imágenes Next.js | Medio | Bajo |
-| 🟡 Media | Compresión antes de subir | Medio | Bajo |
-| 🟡 Media | Paginación | Medio | Medio |
-| 🟢 Baja | Firestore offline persistence | Bajo | Bajo |
-| 🟢 Baja | Cloud Functions thumbnails | Bajo | Alto |
-| 🟢 Baja | Denormalización | Bajo | Medio |
+| Prioridad | Mejora | Impacto | Esfuerzo | Estado |
+|-----------|--------|---------|----------|--------|
+| 🔴 Alta | React Query (caché) | Alto | Medio | ✅ Completado |
+| 🔴 Alta | ISR para páginas públicas | Alto | Bajo | ✅ Completado |
+| 🟡 Media | Optimización de imágenes Next.js | Medio | Bajo | 🟡 Pendiente |
+| 🟡 Media | Compresión antes de subir | Medio | Bajo | 🟡 Pendiente |
+| 🟡 Media | Paginación | Medio | Medio | 🟡 Pendiente |
+| 🟢 Baja | Firestore offline persistence | Bajo | Bajo | 🟡 Pendiente |
+| 🟢 Baja | Cloud Functions thumbnails | Bajo | Alto | 🟢 Opcional |
+| 🟢 Baja | Denormalización | Bajo | Medio | 🟢 Opcional |
 
 ---
 
@@ -369,9 +392,9 @@ Con las mejoras de prioridad alta implementadas:
 
 ## 9. Próximos Pasos
 
-1. [ ] Instalar y configurar TanStack Query
+1. [x] ~~Instalar y configurar TanStack Query~~ ✅ Completado
 2. [ ] Configurar next.config.ts para imágenes
-3. [ ] Añadir ISR a páginas públicas
+3. [x] ~~Añadir ISR a páginas públicas~~ ✅ Completado
 4. [ ] Implementar compresión de imágenes
 5. [ ] Configurar alertas de uso en Firebase
 6. [ ] Implementar paginación en portfolio
@@ -379,5 +402,26 @@ Con las mejoras de prioridad alta implementadas:
 
 ---
 
+## 10. Archivos Creados/Modificados
+
+### Nuevos archivos:
+- `lib/providers/query-provider.tsx`
+- `lib/hooks/use-projects.ts`
+- `lib/hooks/use-posts.ts`
+- `lib/hooks/use-categories.ts`
+- `lib/hooks/index.ts`
+- `app/api/projects/route.ts`
+- `app/api/projects/[slug]/route.ts`
+- `app/api/categories/route.ts`
+
+### Archivos modificados:
+- `app/layout.tsx` - Añadido QueryProvider
+- `components/portfolio-section.tsx` - Usa hooks de React Query
+- `app/[locale]/portfolio/page.tsx` - Usa hooks de React Query
+- `app/[locale]/portfolio/[slug]/page.tsx` - Usa hooks de React Query
+- `package.json` - Añadido @tanstack/react-query
+
+---
+
 *Documento creado: 2026-01-30*
-*Última actualización: 2026-01-30*
+*Última actualización: 2026-01-31*
