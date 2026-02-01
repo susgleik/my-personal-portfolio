@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getProjects, deleteProject } from '@/lib/firestore';
+import { deleteProjectImages } from '@/lib/storage';
 import { Project } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,9 +29,18 @@ export default function ProjectsPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar este proyecto?')) return;
+    if (!confirm('¿Estás seguro de eliminar este proyecto? Se eliminarán también todas las imágenes.')) return;
 
     try {
+      // Encontrar el proyecto para obtener sus imágenes
+      const projectToDelete = projects.find(p => p.id === id);
+
+      // Eliminar imágenes de Storage primero
+      if (projectToDelete) {
+        await deleteProjectImages(projectToDelete.thumbnail, projectToDelete.images);
+      }
+
+      // Eliminar documento de Firestore
       await deleteProject(id);
       setProjects(projects.filter(project => project.id !== id));
     } catch (error) {

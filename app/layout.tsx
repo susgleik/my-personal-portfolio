@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import { QueryProvider } from "@/lib/providers/query-provider"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -186,6 +187,7 @@ export default function RootLayout({
       </head>
       <body className={spaceGrotesk.className}>
         <QueryProvider>{children}</QueryProvider>
+        <SpeedInsights />
       </body>
     </html>
   )

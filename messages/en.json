@@ -12,6 +12,24 @@
   "hero": {
     "greeting": "Welcome to my **personal portfolio**",
     "title": "I develop software and scale digital products",
+    "titlePrefix": "Developer of",
+    "subtitle": "I build web applications with React, Next.js, and modern technologies",
+    "words": {
+      "software": "Software",
+      "experiences": "Experiences",
+      "solutions": "Solutions",
+      "products": "Products"
+    },
+    "skills": {
+      "webApps": "Web Apps",
+      "ai": "AI",
+      "scalable": "Scalable",
+      "performance": "Performance",
+      "databases": "Databases",
+      "cloud": "Cloud",
+      "responsive": "Responsive",
+      "fullStack": "Full Stack"
+    },
     "card1": "Front-End Developer with React and Next.js experience.",
     "card2": "Passionate about Web3, AI, and data analysis.",
     "card3": "Experience in web development, APIs, and automation.",

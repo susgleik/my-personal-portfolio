@@ -6,6 +6,7 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
+  setDoc,
   query,
   where,
   orderBy,
@@ -14,6 +15,33 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import type { Post, Project, Category } from '@/types';
+
+/**
+ * Genera un ID único para un nuevo proyecto (sin crear el documento)
+ * Útil para subir imágenes antes de crear el documento
+ */
+export const generateProjectId = (): string => {
+  const docRef = doc(collection(db, 'projects'));
+  return docRef.id;
+};
+
+/**
+ * Crea un proyecto con un ID específico (pre-generado)
+ */
+export const createProjectWithId = async (id: string, projectData: Omit<Project, 'id'>) => {
+  try {
+    const docRef = doc(db, 'projects', id);
+    await setDoc(docRef, {
+      ...projectData,
+      createdAt: Timestamp.fromDate(projectData.createdAt),
+      updatedAt: Timestamp.fromDate(projectData.updatedAt)
+    });
+    return id;
+  } catch (error) {
+    console.error('Error creating project with id:', error);
+    throw error;
+  }
+};
 
 export const createPost = async (postData: Omit<Post, 'id'>) => {
   try {

@@ -173,7 +173,7 @@ export default function ProjectDetailPage() {
 
       {/* Main Image */}
       {project.thumbnail && (
-        <ScrollFadeWrapper delay={100}>
+        <ScrollFadeWrapper delay={1}>
           <section className="px-4 sm:px-6 lg:px-8 pb-12">
             <div className="max-w-5xl mx-auto">
               <div className="relative aspect-video rounded-2xl overflow-hidden">
@@ -191,7 +191,6 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Content */}
-      <ScrollFadeWrapper delay={200}>
         <section className="px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-3xl mx-auto">
             <article className="prose prose-lg prose-invert max-w-none">
@@ -220,11 +219,11 @@ export default function ProjectDetailPage() {
             </article>
           </div>
         </section>
-      </ScrollFadeWrapper>
+      
 
       {/* Gallery */}
       {project.images && project.images.length > 0 && (
-        <ScrollFadeWrapper delay={300}>
+        <ScrollFadeWrapper delay={1}>
           <section className="px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-5xl mx-auto">
               <h2 className="text-2xl font-bold mb-6">

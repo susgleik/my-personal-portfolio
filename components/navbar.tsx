@@ -16,6 +16,9 @@ export default function Navbar() {
 
   const isStreamingPage = pathname === "/streaming"
   const isHackathonPage = pathname === "/hackathon"
+  const isProjectDetailPage = pathname.startsWith("/portfolio/") && pathname !== "/portfolio"
+  const isPortfolioListPage = pathname === "/portfolio"
+  const isSubPage = isStreamingPage || isHackathonPage || isProjectDetailPage || isPortfolioListPage
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,8 +34,9 @@ export default function Navbar() {
 
   const scrollToSection = (id: string) => {
     if (pathname !== "/") {
-      // If not on home page, navigate to home first
-      window.location.href = `/#${id}`
+      // Navigate to home page and then scroll to section
+      router.push(`/#${id}`)
+      setIsMobileMenuOpen(false)
       return
     }
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
@@ -62,31 +66,19 @@ export default function Navbar() {
             Angel Hernandez
           </Link>
 
-          {isStreamingPage && (
+          {isSubPage && (
             <div className="hidden md:flex items-center mr-6">
               <Link
                 href="/"
                 className="inline-flex items-center space-x-2 nav-item text-white/75 hover:text-white transition-colors relative"
               >
                 <ArrowLeft size={20} />
-                <span>{t("streaming.backHome")}</span>
+                <span>{t("portfolio.backToHome")}</span>
               </Link>
             </div>
           )}
 
-          {isHackathonPage && (
-            <div className="hidden md:flex items-center mr-6">
-              <Link
-                href="/"
-                className="inline-flex items-center space-x-2 nav-item text-white/75 hover:text-white transition-colors relative"
-              >
-                <ArrowLeft size={20} />
-                <span>{t("hackathon.backHome")}</span>
-              </Link>
-            </div>
-          )}
-
-          {!isStreamingPage && !isHackathonPage && (
+          {!isSubPage && (
             <div className="hidden md:flex items-center space-x-8 mr-6">
               <button
                 onClick={() => scrollToSection("home")}
@@ -141,7 +133,7 @@ export default function Navbar() {
               <span className="text-xs font-medium">{locale === "en" ? "ES" : "EN"}</span>
             </button>
 
-            {(isStreamingPage || isHackathonPage) && (
+            {isSubPage && (
               <Link
                 href="/"
                 className="text-white hover:text-white/80 transition-colors glass p-2 rounded-lg"
@@ -151,7 +143,7 @@ export default function Navbar() {
               </Link>
             )}
 
-            {!isStreamingPage && !isHackathonPage && (
+            {!isSubPage && (
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-white hover:text-white/80 transition-colors glass p-2 rounded-lg"
@@ -164,7 +156,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {isMobileMenuOpen && !isStreamingPage && !isHackathonPage && (
+        {isMobileMenuOpen && !isSubPage && (
           <div className="md:hidden mt-4 glass rounded-lg p-4" role="menu">
             <div className="flex flex-col space-y-4 text-center">
               <button

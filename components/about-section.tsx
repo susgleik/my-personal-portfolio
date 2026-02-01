@@ -15,7 +15,7 @@ export default function AboutSection() {
     const processedText = text
       .replace(
         /\[Riservi\]/g,
-        '<a href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-white/80 underline underline-offset-2 transition-colors">Riservi</a>',
+        '<a href="https://www.riservi.com/" target="_blank" rel="noopener noreferrer" class="text-white hover:text-white/80 underline underline-offset-2 transition-colors">Riservi</a>',
       )
 
     // Process bold text

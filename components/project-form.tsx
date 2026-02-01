@@ -24,8 +24,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { createProject, updateProject, generateSlug, getCategories } from '@/lib/firestore';
-import { uploadImage, uploadMultipleImages } from '@/lib/storage';
+import { createProjectWithId, updateProject, generateSlug, getCategories, generateProjectId } from '@/lib/firestore';
+import { uploadImage, uploadMultipleImages, deleteImageByUrl } from '@/lib/storage';
 import { translateProjectFields } from '@/lib/translate';
 import type { Project, Category } from '@/types';
 import Image from 'next/image';
@@ -63,6 +63,8 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  // Track images to delete from Storage
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -132,7 +134,14 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
   };
 
   const removeImage = (index: number) => {
+    const imageUrl = imagePreviews[index];
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+
+    // Si es una imagen existente (URL de Firebase), marcarla para eliminar
+    if (imageUrl && imageUrl.startsWith('http') && project?.images?.includes(imageUrl)) {
+      setImagesToDelete((prev) => [...prev, imageUrl]);
+    }
+
     // Solo remover del array de archivos si es una imagen nueva (no existente)
     if (index >= (project?.images?.length || 0)) {
       const adjustedIndex = index - (project?.images?.length || 0);
@@ -145,27 +154,47 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
     setError(null);
 
     try {
-      // 1. Subir thumbnail si hay uno nuevo
+      // Usar ID existente o generar uno nuevo para la carpeta de Storage
+      // El ID nunca cambia, así que las imágenes siempre están en la misma carpeta
+      const projectId = mode === 'edit' && project?.id ? project.id : generateProjectId();
+      const storagePath = `projects/${projectId}`;
+
       let thumbnailUrl = project?.thumbnail || '';
+      const existingImages = imagePreviews.filter(url => url.startsWith('http') && !imagesToDelete.includes(url));
+
+      // 1. Subir thumbnail si hay uno nuevo y eliminar el anterior
       if (thumbnailFile) {
-        const slug = generateSlug(data.title);
-        thumbnailUrl = await uploadImage(thumbnailFile, `projects/${slug}/thumbnail-${Date.now()}`);
+        if (project?.thumbnail) {
+          try {
+            await deleteImageByUrl(project.thumbnail);
+          } catch (err) {
+            console.warn('Could not delete old thumbnail:', err);
+          }
+        }
+        thumbnailUrl = await uploadImage(thumbnailFile, `${storagePath}/thumbnail-${Date.now()}`);
       }
 
-      // 2. Subir nuevas imágenes
-      let allImageUrls = project?.images || [];
+      // 2. Eliminar imágenes marcadas para borrar
+      if (imagesToDelete.length > 0) {
+        await Promise.all(
+          imagesToDelete.map(async (url) => {
+            try {
+              await deleteImageByUrl(url);
+            } catch (err) {
+              console.warn('Could not delete image:', url, err);
+            }
+          })
+        );
+      }
+
+      // 3. Subir nuevas imágenes
+      let allImageUrls = existingImages;
       if (imageFiles.length > 0) {
-        const slug = generateSlug(data.title);
-        const newImageUrls = await uploadMultipleImages(imageFiles, `projects/${slug}`);
-        // Mantener imágenes existentes + nuevas
-        allImageUrls = [...(project?.images || []), ...newImageUrls];
+        const newImageUrls = await uploadMultipleImages(imageFiles, storagePath);
+        allImageUrls = [...existingImages, ...newImageUrls];
       }
-      // Actualizar con las previews actuales (por si se eliminaron algunas)
-      allImageUrls = imagePreviews.filter(url => !url.startsWith('data:')).concat(
-        allImageUrls.filter(url => url.startsWith('http') && !imagePreviews.includes(url) === false)
-      );
 
-      // 3. Traducir campos al inglés
+      // 4. Traducir campos al inglés
       setIsTranslating(true);
       const translations = await translateProjectFields({
         title: data.title,
@@ -174,7 +203,7 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
       });
       setIsTranslating(false);
 
-      // 4. Preparar datos del proyecto (usar spread condicional para campos opcionales)
+      // 5. Preparar datos del proyecto
       const projectData = {
         title: data.title,
         description: data.description,
@@ -186,22 +215,21 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
         thumbnail: thumbnailUrl,
         images: allImageUrls.filter(url => url.startsWith('http')),
         technologies: data.technologies.split(',').map((t) => t.trim()).filter(Boolean),
-        featured: data.order < 5, // Los primeros 5 proyectos aparecen en Home
+        featured: data.order < 5,
         isPublished: data.isPublished,
         status: data.status,
         order: data.order,
         createdAt: project?.createdAt || new Date(),
         updatedAt: new Date(),
-        // Campos opcionales - solo incluir si tienen valor (Firestore no acepta undefined)
         ...(data.category && { category: data.category }),
         ...(data.githubUrl && { githubUrl: data.githubUrl }),
         ...(data.liveUrl && { liveUrl: data.liveUrl }),
         ...(data.mediumUrl && { mediumUrl: data.mediumUrl }),
       };
 
-      // 5. Crear o actualizar
+      // 6. Crear o actualizar
       if (mode === 'create') {
-        await createProject(projectData);
+        await createProjectWithId(projectId, projectData);
       } else if (project?.id) {
         await updateProject(project.id, projectData);
       }
