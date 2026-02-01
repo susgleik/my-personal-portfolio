@@ -41,6 +41,7 @@
   },
   "portfolio": {
     "title": "Portfolio",
+    "sectionTag": "Proyectos",
     "subtitle": "Proyectos y casos de estudio que muestran soluciones de desarrollo web y productos digitales",
     "viewAll": "Ver Todos los Proyectos",
     "viewProject": "Ver Proyecto",
@@ -56,6 +57,7 @@
   },
   "about": {
     "title": "ACERCA DE MÍ",
+    "sectionTag": "Sobre Mí",
     "bio1": "Angel Hernandez (Ciudad de Panamá, Panamá) es un *desarrollador de software* apasionado con experiencia en *desarrollo web*, *análisis de datos* y *proyectos de TI*. Actualmente cursa la *Licenciatura en Ingeniería de Software* y cuenta con certificaciones en *AWS*, *Data Analysis* y *Machine Learning*.",
     "bio2": "Se desempeñó como *Desarrollador Front-End* en *[Riservi]*, donde participó en la creación de funcionalidades desde cero, colaborando con diseñadores UI/UX. Su proyecto destacado fue el desarrollo de un *sistema de cuestionarios* tipo SurveyMonkey con módulos de respuestas, reportes y estadísticas.",
     "bio3": "Anteriormente trabajó como *Desarrollador e IT* en *Arauz C. & Asociados*, donde desarrolló *scripts en Excel con Visual Basic* para automatizar flujos de trabajo contables, y creó *APIs para QuickBooks*. Domina tecnologías como *React*, *Next.js*, *TypeScript*, *Python*, *FastAPI*, *SQL*, *MongoDB* y *Supabase*.",
@@ -86,6 +88,7 @@
     "viewAll": "Ver Últimos 10 Artículos"
   },
   "footer": {
+    "sectionTag": "Contacto",
     "portfolio": "PORTAFOLIO",
     "about": "ACERCA DE MÍ",
     "connect": "CONECTEMOS",

@@ -41,6 +41,7 @@
   },
   "portfolio": {
     "title": "Portfolio",
+    "sectionTag": "Projects",
     "subtitle": "Projects and case studies showcasing web development solutions and digital products",
     "viewAll": "View All Projects",
     "viewProject": "View Project",
@@ -56,6 +57,7 @@
   },
   "about": {
     "title": "ABOUT ME",
+    "sectionTag": "About Me",
     "bio1": "Angel Hernandez (Panama City, Panama) is a passionate *software developer* with experience in *web development*, *data analysis*, and *IT projects*. He is currently pursuing a *Bachelor's degree in Software Engineering* and holds certifications in *AWS*, *Data Analysis*, and *Machine Learning*.",
     "bio2": "He worked as a *Front-End Developer* at *[Riservi]*, where he participated in building features from scratch, collaborating with UI/UX designers. His notable project was developing a *survey system* similar to SurveyMonkey with response modules, reports, and statistics.",
     "bio3": "Previously, he worked as a *Developer and IT* at *Arauz C. & Asociados*, where he developed *Excel scripts with Visual Basic* to automate accounting workflows and created *APIs for QuickBooks*. He masters technologies like *React*, *Next.js*, *TypeScript*, *Python*, *FastAPI*, *SQL*, *MongoDB*, and *Supabase*.",
@@ -86,6 +88,7 @@
     "viewAll": "View Latest 10 Articles"
   },
   "footer": {
+    "sectionTag": "Contact",
     "portfolio": "PORTFOLIO",
     "about": "ABOUT ME",
     "connect": "LET'S CONNECT",

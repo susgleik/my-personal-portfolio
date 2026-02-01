@@ -1,10 +1,10 @@
 import Navbar from "@/components/navbar"
 import HeroSection from "@/components/hero-section"
-import AboutSection from "@/components/about-section"
 import PortfolioSection from "@/components/portfolio-section"
 import Footer from "@/components/footer"
 import ScrollFadeWrapper from "@/components/scroll-fade-wrapper"
 import PageLoader from "@/components/page-loader"
+import AboutSection from "@/components/about-section"
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
 
         <ScrollFadeWrapper delay={0}>
           <HeroSection />
-        </ScrollFadeWrapper>
+        </ScrollFadeWrapper>  
 
         <ScrollFadeWrapper delay={50}>
           <AboutSection />
