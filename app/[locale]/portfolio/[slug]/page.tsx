@@ -6,7 +6,6 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/navbar';
-import ScrollFadeWrapper from '@/components/scroll-fade-wrapper';
 import { Button } from '@/components/ui/button';
 import { useProjectBySlug, useCategoryBySlug } from '@/lib/hooks';
 import { Loader2, ArrowLeft, ExternalLink, Github } from 'lucide-react';
@@ -85,169 +84,187 @@ export default function ProjectDetailPage() {
   const content = locale === 'en' && project.content_en ? project.content_en : project.content;
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
       <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <ScrollFadeWrapper delay={0}>
-            <Link
-              href="/portfolio"
-              className="inline-flex items-center text-blue-400 hover:text-blue-300 text-sm mb-6 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              {locale === 'en' ? 'Back to Portfolio' : 'Volver al Portafolio'}
-            </Link>
+          <Link
+            href="/portfolio"
+            className="inline-flex items-center text-blue-400 hover:text-blue-300 text-sm mb-6 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {locale === 'en' ? 'Back to Portfolio' : 'Volver al Portafolio'}
+          </Link>
 
-            <div className="flex flex-wrap gap-2 mb-4">
-              {category && (
-                <span
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${getCategoryColorClass(category.color)}`}
-                >
-                  {category.emoji} {category.name}
-                </span>
-              )}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {category && (
               <span
-                className={`px-3 py-1 text-xs font-medium rounded-full ${
-                  project.status === 'completed'
-                    ? 'bg-green-500/20 text-green-300'
-                    : project.status === 'in-progress'
-                    ? 'bg-yellow-500/20 text-yellow-300'
-                    : 'bg-gray-500/20 text-gray-300'
-                }`}
+                className={`px-3 py-1 text-xs font-medium rounded-full ${getCategoryColorClass(category.color)}`}
               >
-                {project.status === 'completed'
-                  ? '✅ ' + (locale === 'en' ? 'Completed' : 'Completado')
-                  : project.status === 'in-progress'
-                  ? '🔄 ' + (locale === 'en' ? 'In Progress' : 'En Progreso')
-                  : '📋 ' + (locale === 'en' ? 'Planned' : 'Planeado')}
+                {category.emoji} {category.name}
               </span>
-            </div>
+            )}
+            <span
+              className={`px-3 py-1 text-xs font-medium rounded-full ${
+                project.status === 'completed'
+                  ? 'bg-green-500/20 text-green-300'
+                  : project.status === 'in-progress'
+                  ? 'bg-yellow-500/20 text-yellow-300'
+                  : 'bg-gray-500/20 text-gray-300'
+              }`}
+            >
+              {project.status === 'completed'
+                ? '✅ ' + (locale === 'en' ? 'Completed' : 'Completado')
+                : project.status === 'in-progress'
+                ? '🔄 ' + (locale === 'en' ? 'In Progress' : 'En Progreso')
+                : '📋 ' + (locale === 'en' ? 'Planned' : 'Planeado')}
+            </span>
+          </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">{title}</h1>
-            <p className="text-xl text-white/70 mb-6">{description}</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 break-words">{title}</h1>
+          <p className="text-lg sm:text-xl text-white/70 mb-6">{description}</p>
 
-            {/* Technologies */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {project.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 text-sm font-medium bg-blue-500/20 text-blue-300 rounded-full"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1 text-sm font-medium bg-blue-500/20 text-blue-300 rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
 
-            {/* Action buttons */}
-            <div className="flex flex-wrap gap-4 mb-8">
-              {project.liveUrl && (
-                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white inline-flex items-center gap-2 transition-colors cursor-pointer">
-                    <ExternalLink className="w-4 h-4 shrink-0" />
-                    <span>{locale === 'en' ? 'View Live' : 'Ver Demo'}</span>
-                  </button>
-                </a>
-              )}
-              {project.githubUrl && (
-                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
-                    <Github className="w-4 h-4 shrink-0" />
-                    <span>GitHub</span>
-                  </button>
-                </a>
-              )}
-              {project.mediumUrl && (
-                <a href={project.mediumUrl} target="_blank" rel="noopener noreferrer">
-                  <button className="h-9 px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
-                    <MediumIcon className="w-4 h-4 shrink-0" />
-                    <span>Medium</span>
-                  </button>
-                </a>
-              )}
-            </div>
-          </ScrollFadeWrapper>
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-3 sm:gap-4 mb-8">
+            {project.liveUrl && (
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                <button className="h-9 px-3 sm:px-4 py-2 rounded-md text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white inline-flex items-center gap-2 transition-colors cursor-pointer">
+                  <ExternalLink className="w-4 h-4 shrink-0" />
+                  <span>{locale === 'en' ? 'View Live' : 'Ver Demo'}</span>
+                </button>
+              </a>
+            )}
+            {project.githubUrl && (
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                <button className="h-9 px-3 sm:px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
+                  <Github className="w-4 h-4 shrink-0" />
+                  <span>GitHub</span>
+                </button>
+              </a>
+            )}
+            {project.mediumUrl && (
+              <a href={project.mediumUrl} target="_blank" rel="noopener noreferrer">
+                <button className="h-9 px-3 sm:px-4 py-2 rounded-md text-sm font-medium bg-transparent border border-white/30 text-white hover:bg-white/10 hover:border-white/50 inline-flex items-center gap-2 transition-colors cursor-pointer">
+                  <MediumIcon className="w-4 h-4 shrink-0" />
+                  <span>Medium</span>
+                </button>
+              </a>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Main Image */}
       {project.thumbnail && (
-        <ScrollFadeWrapper delay={1}>
-          <section className="px-4 sm:px-6 lg:px-8 pb-12">
-            <div className="max-w-5xl mx-auto">
-              <div className="relative aspect-video rounded-2xl overflow-hidden">
-                <Image
-                  src={project.thumbnail}
-                  alt={title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
+        <section className="px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="max-w-5xl mx-auto">
+            <div className="relative aspect-video rounded-2xl overflow-hidden">
+              <Image
+                src={project.thumbnail}
+                alt={title}
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
-          </section>
-        </ScrollFadeWrapper>
+          </div>
+        </section>
       )}
 
       {/* Content */}
-        <section className="px-4 sm:px-6 lg:px-8 py-12">
-          <div className="max-w-3xl mx-auto">
-            <article className="prose prose-lg prose-invert max-w-none">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  img: ({ src, alt }) => (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedImage(src || '')}
-                      className="relative w-full my-4 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity block"
-                    >
-                      <Image
-                        src={src || ''}
-                        alt={alt || ''}
-                        width={800}
-                        height={450}
-                        className="object-cover w-full"
-                      />
-                    </button>
-                  ),
-                }}
-              >
-                {content}
-              </ReactMarkdown>
-            </article>
-          </div>
-        </section>
-      
+      <section className="px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-3xl mx-auto">
+          <article className="prose prose-lg prose-invert max-w-none prose-pre:overflow-x-auto prose-pre:max-w-full prose-code:break-words [&_*]:max-w-full [&_pre]:rounded-lg [&_a]:break-words">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                img: ({ src, alt }) => (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedImage(src || '')}
+                    className="relative w-full my-4 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity block"
+                  >
+                    <Image
+                      src={src || ''}
+                      alt={alt || ''}
+                      width={800}
+                      height={450}
+                      className="object-cover w-full"
+                    />
+                  </button>
+                ),
+                pre: ({ children }) => (
+                  <pre className="overflow-x-auto max-w-full text-sm">
+                    {children}
+                  </pre>
+                ),
+                code: ({ children, className }) => {
+                  const isInline = !className;
+                  return isInline ? (
+                    <code className="break-words bg-white/10 px-1.5 py-0.5 rounded text-sm">
+                      {children}
+                    </code>
+                  ) : (
+                    <code className={className}>{children}</code>
+                  );
+                },
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 break-words"
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
+          </article>
+        </div>
+      </section>
 
       {/* Gallery */}
       {project.images && project.images.length > 0 && (
-        <ScrollFadeWrapper delay={1}>
-          <section className="px-4 sm:px-6 lg:px-8 py-12">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-2xl font-bold mb-6">
-                {locale === 'en' ? 'Gallery' : 'Galería'}
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {project.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(image)}
-                    className="relative aspect-video rounded-xl overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    <Image
-                      src={image}
-                      alt={`${title} - Image ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
+        <section className="px-4 sm:px-6 lg:px-8 py-12">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl font-bold mb-6">
+              {locale === 'en' ? 'Gallery' : 'Galería'}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {project.images.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(image)}
+                  className="relative aspect-video rounded-xl overflow-hidden hover:opacity-90 transition-opacity cursor-pointer"
+                >
+                  <Image
+                    src={image}
+                    alt={`${title} - Image ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
             </div>
-          </section>
-        </ScrollFadeWrapper>
+          </div>
+        </section>
       )}
 
       {/* Image Modal */}

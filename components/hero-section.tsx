@@ -2,6 +2,7 @@
 import { ChevronDown, Code2, Brain, Rocket, Globe, Database, Cloud, Smartphone, Zap } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 
 const skillsConfig = [
   { icon: Code2, key: "webApps", color: "from-cyan-400 to-cyan-600" },
@@ -41,15 +42,17 @@ export default function HeroLiquid() {
 
   return (
     <section id="home" className="min-h-screen relative flex items-center justify-center overflow-hidden pt-16 md:pt-0">
-      {/* Background */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: "url(/images/background.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      {/* Background - Using Next.js Image for optimized loading */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/background.png"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-10"
+          sizes="100vw"
+        />
+      </div>
 
       {/* Simplified liquid orbs - cleaner, fewer, better positioned */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -229,7 +232,7 @@ export default function HeroLiquid() {
           <div className={`flex justify-center mt-14 sm:mt-20 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: "1400ms" }}>
             <button
               onClick={scrollToAbout}
-              className="group relative"
+              className="group relative cursor-pointer"
               aria-label="Scroll to about section"
             >
               <div

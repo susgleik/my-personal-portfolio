@@ -82,21 +82,21 @@ export default function Navbar() {
             <div className="hidden md:flex items-center space-x-8 mr-6">
               <button
                 onClick={() => scrollToSection("home")}
-                className="nav-item text-white/75 hover:text-white transition-colors relative"
+                className="nav-item text-white/75 hover:text-white transition-colors relative cursor-pointer"
                 aria-label="Navigate to home section"
               >
                 {t("nav.home")}
               </button>
               <button
                 onClick={() => scrollToSection("about")}
-                className="nav-item text-white/75 hover:text-white transition-colors relative"
+                className="nav-item text-white/75 hover:text-white transition-colors relative cursor-pointer"
                 aria-label="Navigate to about section"
               >
                 {t("nav.about")}
               </button>
               <button
                 onClick={() => scrollToSection("portfolio")}
-                className="nav-item text-white/75 hover:text-white transition-colors relative"
+                className="nav-item text-white/75 hover:text-white transition-colors relative cursor-pointer"
                 aria-label="Navigate to portfolio section"
               >
                 {t("nav.portfolio")}
@@ -104,7 +104,7 @@ export default function Navbar() {
 {/* Articles, Talks, Streaming, Hackathon - Ocultos temporalmente */}
               <button
                 onClick={() => scrollToSection("contact")}
-                className="nav-item text-white/75 hover:text-white transition-colors relative"
+                className="nav-item text-white/75 hover:text-white transition-colors relative cursor-pointer"
                 aria-label="Navigate to contact section"
               >
                 {t("nav.contact")}
@@ -115,7 +115,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center">
             <button
               onClick={toggleLanguage}
-              className="flex items-center space-x-2 text-white hover:text-white/80 transition-colors glass px-3 py-2 rounded-lg"
+              className="flex items-center space-x-2 text-white hover:text-white/80 transition-colors glass px-3 py-2 rounded-lg cursor-pointer"
               aria-label={`Switch to ${locale === "en" ? "Spanish" : "English"} language`}
             >
               <Globe size={16} />
@@ -156,7 +156,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {isMobileMenuOpen && !isSubPage && (
+        {isMobileMenuOpen && !isStreamingPage && !isHackathonPage && (
           <div className="md:hidden mt-4 glass rounded-lg p-4" role="menu">
             <div className="flex flex-col space-y-4 text-center">
               <button

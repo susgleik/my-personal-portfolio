@@ -74,7 +74,7 @@ export default function Footer() {
 
             <div className="mb-6">
               <Button
-                className="glass glass-hover border border-white/20 hover:border-white/40 text-white font-semibold px-6 py-3 group transition-all duration-300 hover:scale-105"
+                className="glass glass-hover border border-white/20 hover:border-white/40 text-white font-semibold px-6 py-3 group transition-all duration-300 hover:scale-105 cursor-pointer"
                 onClick={() =>
                   window.open("https://wa.me/50764776873?text=Hola%2C%20%C2%BFC%C3%B3mo%20est%C3%A1s%3F", "_blank")
                 }
@@ -88,14 +88,21 @@ export default function Footer() {
 
               <Button
                 size="icon"
-                className="glass glass-hover rounded-full border-white/20 hover:border-white/40"
+                className="glass glass-hover rounded-full border-white/20 hover:border-white/40 cursor-pointer"
                 onClick={() => window.open("https://www.linkedin.com/in/angel-hernandez-51789a25a/", "_blank")}
               >
                 <Image src="/icons/linkedin.svg" alt="LinkedIn" width={20} height={20} className="w-5 h-5" />
               </Button>
-              {/*
 
-              
+              <Button
+                size="icon"
+                className="glass glass-hover rounded-full border-white/20 hover:border-white/40 cursor-pointer"
+                onClick={() => window.open("https://github.com/susgleik", "_blank")}
+              >
+                <Image src="/images/github.png" alt="GitHub" width={20} height={20} className="w-5 h-5" />
+              </Button>
+
+              {/*
               <Button
                 size="icon"
                 className="glass glass-hover rounded-full border-white/20 hover:border-white/40"

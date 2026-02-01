@@ -121,7 +121,7 @@ export default function PortfolioSection() {
           <Link href="/portfolio">
             <Button
               size="lg"
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 rounded-full px-8"
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 rounded-full px-8 cursor-pointer"
             >
               {locale === 'en' ? 'View All Projects' : 'Ver Todos los Proyectos'}
               <ArrowRight className="w-4 h-4 ml-2" />
