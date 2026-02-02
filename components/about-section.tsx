@@ -204,9 +204,10 @@ export default function AboutSection2() {
             {/* CTA Button */}
             <div className={`flex justify-center lg:justify-start pt-4 transition-all duration-1000 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: "900ms" }}>
               <button
-                onClick={() =>
-                  window.open("https://wa.me/50764776873?text=Hola%2C%20%C2%BFC%C3%B3mo%20est%C3%A1s%3F", "_blank")
-                }
+                onClick={() => {
+                  const message = encodeURIComponent(t("about.whatsappMessage"))
+                  window.open(`https://wa.me/50764776873?text=${message}`, "_blank")
+                }}
                 className="group relative cursor-pointer"
               >
                 {/* Button glow */}

@@ -166,9 +166,10 @@ export default function Footer() {
         <div className={`flex flex-col items-center gap-8 mb-16 transition-all duration-1000 delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           {/* WhatsApp CTA Button */}
           <button
-            onClick={() =>
-              window.open("https://wa.me/50764776873?text=Hola%2C%20%C2%BFC%C3%B3mo%20est%C3%A1s%3F", "_blank")
-            }
+            onClick={() => {
+              const message = encodeURIComponent(t("about.whatsappMessage"))
+              window.open(`https://wa.me/50764776873?text=${message}`, "_blank")
+            }}
             className="group relative cursor-pointer"
           >
             <div

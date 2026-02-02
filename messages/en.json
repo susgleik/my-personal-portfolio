@@ -64,7 +64,8 @@
     "links": {
       "title": "Links"
     },
-    "cta": "GET IN TOUCH"
+    "cta": "GET IN TOUCH",
+    "whatsappMessage": "Hello, I am interested in your development services. Can we talk?"
   },
   "companies": {
     "riservi": {
