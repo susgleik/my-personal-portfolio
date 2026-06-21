@@ -16,7 +16,6 @@ const skillsConfig = [
 ]
 
 export default function HeroLiquid() {
-  const [mounted, setMounted] = useState(false)
   const [activeWord, setActiveWord] = useState(0)
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null)
   const t = useTranslations('hero')
@@ -29,7 +28,6 @@ export default function HeroLiquid() {
   ]
 
   useEffect(() => {
-    setMounted(true)
     const interval = setInterval(() => {
       setActiveWord((prev) => (prev + 1) % words.length)
     }, 2500)
@@ -45,7 +43,7 @@ export default function HeroLiquid() {
       {/* Background - Using Next.js Image for optimized loading */}
       <div className="absolute inset-0">
         <Image
-          src="/images/background.png"
+          src="/images/background.webp"
           alt=""
           fill
           priority
@@ -112,7 +110,7 @@ export default function HeroLiquid() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center">
         <div>
           {/* Brand Introduction - Clean and minimal */}
-          <div className={`mb-8 sm:mb-12 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
+          <div className="mb-8 sm:mb-12" style={{ animation: 'fadeInDown 0.8s ease both' }}>
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 animate-pulse" />
               <span className="text-sm sm:text-base text-white/70 font-medium tracking-wide">
@@ -125,7 +123,7 @@ export default function HeroLiquid() {
 
           {/* Main title with morphing word */}
           <div className="relative mb-10 sm:mb-14">
-            <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white px-2 mb-6 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white px-2 mb-6" style={{ animation: 'fadeIn 0.8s ease 0.2s both' }}>
               {t('titlePrefix')}{" "}
               <span className="relative inline-block min-w-[180px] sm:min-w-[280px] md:min-w-[380px]">
                 <span className="absolute inset-0 flex items-center justify-center">
@@ -153,7 +151,7 @@ export default function HeroLiquid() {
               </span>
             </h1>
 
-            <p className={`text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto transition-all duration-1000 delay-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+            <p className="text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto" style={{ animation: 'fadeIn 0.8s ease 0.5s both' }}>
               {t('subtitle')}
             </p>
 
@@ -175,7 +173,7 @@ export default function HeroLiquid() {
           </div>
 
           {/* Skills as floating glass bubbles */}
-          <div className={`relative transition-all duration-1000 delay-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="relative" style={{ animation: 'fadeIn 0.8s ease 0.7s both' }}>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-4xl mx-auto">
               {skillsConfig.map((skill, index) => {
                 const Icon = skill.icon
@@ -184,9 +182,8 @@ export default function HeroLiquid() {
                 return (
                   <div
                     key={skill.key}
-                    className={`transition-all duration-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     style={{
-                      transitionDelay: `${800 + index * 60}ms`,
+                      animation: `fadeInUp 0.5s ease ${0.8 + index * 0.06}s both`,
                     }}
                     onMouseEnter={() => setHoveredSkill(index)}
                     onMouseLeave={() => setHoveredSkill(null)}
@@ -229,7 +226,7 @@ export default function HeroLiquid() {
           </div>
 
           {/* Scroll Button */}
-          <div className={`flex justify-center mt-14 sm:mt-20 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: "1400ms" }}>
+          <div className="flex justify-center mt-14 sm:mt-20" style={{ animation: 'fadeInUp 0.8s ease 1.4s both' }}>
             <button
               onClick={scrollToAbout}
               className="group relative cursor-pointer"
@@ -251,6 +248,18 @@ export default function HeroLiquid() {
       </div>
 
       <style jsx>{`
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-2rem); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(2rem); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         @keyframes orbFloat {
           0%, 100% {
             transform: translate(0, 0);
