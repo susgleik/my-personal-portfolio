@@ -91,11 +91,6 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${spaceGrotesk.variable} antialiased`} suppressHydrationWarning>
       <head>
-        <link rel="preload" href="/images/portfolioimage.png" as="image" type="image/png" />
-        <link rel="preload" href="/images/profile.png" as="image" type="image/jpeg" />
-        <link rel="preload" href="/images/background.png" as="image" type="image/jpeg" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
 
