@@ -56,8 +56,7 @@ components/
 hooks/
 ├── useAuth.ts
 ├── useFirestore.ts
-├── use-mobile.ts
-└── use-scroll-animation.tsx
+└── use-mobile.ts
 ```
 
 ## Autenticación / Admin
@@ -123,6 +122,28 @@ pnpm run dev:full             # emuladores + Next.js
 - App: http://localhost:3000
 - Firebase Emulator UI: http://localhost:4000 (Firestore :8080, Auth :9099, Storage :9199)
 - También existe soporte Docker (`pnpm run docker:up`, ver `docs/DOCKER-SETUP.md`)
+
+## Rendimiento (auditoría de 2026-09-28, Speed Insights de Vercel)
+
+Métricas de producción antes del fix: Real Experience Score mobile **62** (needs improvement) vs desktop **92** (great). La ruta home (`/` y `/[locale]`) era, con diferencia, la peor de todo el sitio (RES 62-73), mientras que `/[locale]/portfolio/[slug]`, `/admin/projects` y `/en/login` ya estaban en 100. Esto apuntaba a un problema específico del home, no del stack en general.
+
+**Causa raíz encontrada y corregida**: el home envolvía todo su contenido en un `PageLoader` (`components/page-loader.tsx`, ya eliminado) que mostraba una pantalla negra a pantalla completa durante un mínimo **fijo de ~400ms + 300ms de transición** en **cada carga**, sin relación alguna con si algo real estaba cargando (era un `setTimeout` fijo, no un estado de carga real). Como el contenido real (incluido el Hero, que es el elemento LCP) quedaba con `opacity: 0` debajo del overlay, el navegador no podía pintar el LCP hasta que ese temporizador arbitrario terminaba — esto por sí solo explica gran parte del RES bajo en mobile.
+
+Encima de eso, cada sección del home estaba **doblemente animada**: un `ScrollFadeWrapper` exterior (con `IntersectionObserver` + `transition-opacity`) envolvía secciones que **ya tenían su propio `IntersectionObserver` interno** (`about-section.tsx`, `footer.tsx`, `portfolio-section.tsx`), duplicando la lógica y apilando retrasos de animación (0/50/100/150ms del wrapper + los propios de cada sección + las animaciones internas del Hero con `@keyframes` escalonados hasta 1.4s). El resultado percibido: transiciones que se sienten lentas y no fluidas, que es exactamente lo reportado.
+
+**Fixes aplicados**:
+1. `app/[locale]/page.tsx` — se eliminó `PageLoader` y `ScrollFadeWrapper` por completo. El Hero (contenido above-the-fold) se renderiza de inmediato; About/Portfolio/Footer conservan su propia animación de scroll-reveal interna, sin el doble envoltorio.
+2. Se borraron `components/page-loader.tsx`, `components/scroll-fade-wrapper.tsx` y `hooks/use-scroll-animation.tsx` por quedar sin uso.
+3. `app/layout.tsx` — se quitaron 3 `<link rel="preload">` de imágenes y 2 `<link rel="preconnect">` a Google Fonts que se aplicaban a **todas las rutas** (incluidas `/admin`, `/blog`, detalle de proyecto), no solo al home:
+   - `background.png` preloadeaba un archivo que ni siquiera es el que usa el Hero (`background.webp`) — nunca se aprovechaba.
+   - `portfolioimage.png` solo se usa como imagen de Open Graph/Twitter (metadata para redes sociales), nunca se renderiza en el DOM — preloadearla era ancho de banda desperdiciado en cada visita.
+   - Los preconnect a `fonts.googleapis.com`/`fonts.gstatic.com` no hacen nada: la fuente (`Space_Grotesk` en `app/layout.tsx`) se carga con `next/font/google`, que la autohospeda en el propio dominio en build time — nunca hay una petición real a Google Fonts en runtime.
+4. Se encontró y corrigió un `next.config.mjs` **fantasma** dentro de `app/next.config.mjs` (Next.js solo lee la config en la raíz del proyecto, así que ese archivo nunca se aplicaba). Tenía optimizaciones pensadas pero nunca activas (`optimizePackageImports`, `optimizeCss`, `compress`, `poweredByHeader: false`, `deviceSizes`/`imageSizes` afinados). Se fusionaron las que siguen siendo válidas en Next 15 dentro del `next.config.mjs` real de la raíz, y se borró el archivo huérfano. `optimizeCss: true` se probó pero se descartó: requiere el paquete `critters` (no instalado) y rompía el build (`Cannot find module 'critters'`) — si se quiere activar en el futuro, agregar `critters` como devDependency primero.
+
+**Pendiente / próximos pasos recomendados** (no implementados aún, requieren más cambio de arquitectura o de diseño):
+- `PortfolioSection` (home) trae los proyectos destacados con React Query **en el cliente** (`useFeaturedProjects`, sin `staleTime` configurado) — en cada carga dura del home hay un round-trip a Firestore después de hidratar, mostrando un spinner antes de los proyectos. Se podría prefetchear en el servidor (Server Component + `HydrationBoundary` de React Query) para que lleguen ya resueltos en el HTML inicial.
+- Hay bastante uso de `backdrop-blur` + `filter: blur(...)` en orbes animados infinitos (`orbFloat`) en Hero/About/Portfolio/Footer simultáneamente — no es el cuello de botella principal, pero en gama baja de gama puede sumar jank; si tras el fix de arriba la fluidez sigue sin sentirse bien, es el siguiente sospechoso.
+- Revisar si conviene bajar la duración/cascada de las animaciones internas de `hero-section.tsx` (llegan hasta 1.4s de delay acumulado antes de que el último elemento aparezca) para que el "asentamiento" visual sea más rápido.
 
 ## Docs relacionados (revisar si hace falta más detalle)
 
