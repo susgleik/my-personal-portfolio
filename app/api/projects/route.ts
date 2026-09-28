@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { unstable_rethrow } from 'next/navigation';
 import { getPublishedProjects, getFeaturedProjects } from '@/lib/firestore';
 
 // Revalidar cada hora (3600 segundos)
@@ -23,6 +24,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
+    unstable_rethrow(error);
     console.error('Error fetching projects:', error);
     return NextResponse.json(
       { error: 'Failed to fetch projects' },
