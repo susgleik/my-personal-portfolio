@@ -221,10 +221,10 @@ export default function ProjectForm({ project, mode }: ProjectFormProps) {
         order: data.order,
         createdAt: project?.createdAt || new Date(),
         updatedAt: new Date(),
-        ...(data.category && { category: data.category }),
-        ...(data.githubUrl && { githubUrl: data.githubUrl }),
-        ...(data.liveUrl && { liveUrl: data.liveUrl }),
-        ...(data.mediumUrl && { mediumUrl: data.mediumUrl }),
+        category: data.category || '',
+        githubUrl: data.githubUrl || '',
+        liveUrl: data.liveUrl || '',
+        mediumUrl: data.mediumUrl || '',
       };
 
       // 6. Crear o actualizar
